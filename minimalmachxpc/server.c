@@ -1,44 +1,50 @@
 #include <dispatch/dispatch.h>
-#include <stdio.h>
+#include <os/log.h>
 #include <stdlib.h>
 #include <string.h>
 #include <xpc/xpc.h>
 
+static os_log_t log;
+
 int main(void) {
+  log = os_log_create("com.geoffrey4444.minimal", "server");
+
   xpc_connection_t listener = xpc_connection_create_mach_service(
       "com.geoffrey4444.minimal", dispatch_get_main_queue(),
       XPC_CONNECTION_MACH_SERVICE_LISTENER);
   if (!listener) {
-    fprintf(stderr, "listener could not be created\n");
+    os_log_error(log, "listener could not be created");
     exit(EXIT_FAILURE);
   }
 
   xpc_connection_set_event_handler(listener, ^(xpc_object_t peer) {
     if (xpc_get_type(peer) == XPC_TYPE_ERROR) {
-      fprintf(stderr, "listener error: %s\n",
-              xpc_dictionary_get_string(peer, XPC_ERROR_KEY_DESCRIPTION));
+      os_log_error(log, "listener error: %{public}s",
+                   xpc_dictionary_get_string(peer, XPC_ERROR_KEY_DESCRIPTION));
       return;
     }
-    printf("server accepted connection\n");
+    os_log_info(log, "server accepted connection");
 
     xpc_connection_set_event_handler(peer, ^(xpc_object_t event) {
       if (xpc_get_type(event) == XPC_TYPE_ERROR) {
-        fprintf(stderr, "peer error: %s\n",
-                xpc_dictionary_get_string(event, XPC_ERROR_KEY_DESCRIPTION));
+        os_log_error(
+            log, "peer error: %{public}s",
+            xpc_dictionary_get_string(event, XPC_ERROR_KEY_DESCRIPTION));
         return;
       }
 
       if (xpc_get_type(event) != XPC_TYPE_DICTIONARY) {
-        fprintf(stderr, "non-dictionary message received.\n");
+        os_log_error(log, "non-dictionary message received.");
         return;
       }
 
       const char *cmd = xpc_dictionary_get_string(event, "command");
-      printf("server received command: %s\n", cmd ? cmd : "(null)");
+      os_log_info(log, "server received command: %{public}s",
+                  cmd ? cmd : "(null)");
 
       xpc_object_t reply = xpc_dictionary_create_reply(event);
       if (!reply) {
-        fprintf(stderr, "message did not request reply\n");
+        os_log_error(log, "message did not request reply");
         return;
       }
 

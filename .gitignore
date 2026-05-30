@@ -1,1 +1,3 @@
 *.dSYM
+minimalmachxpc/client
+minimalmachxpc/server

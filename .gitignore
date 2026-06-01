@@ -1,3 +1,4 @@
 *.dSYM
 minimalmachxpc/client
 minimalmachxpc/server
+.DS_Store

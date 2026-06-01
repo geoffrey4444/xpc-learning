@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.geoffrey4444.minimalswift</string>
+
+  <key>Program</key>
+  <string>/Users/geoffrey/Transfer/Test041726/xpc/minimalmachxpc/swift-server</string>
+
+  <key>MachServices</key>
+  <dict>
+    <key>com.geoffrey4444.minimalswift</key>
+    <true/>
+  </dict>
+
+  <key>RunAtLoad</key>
+  <false/>
+
+  <key>StandardOutPath</key>
+  <string>/tmp/xpcminimalswift.out</string>
+
+  <key>StandardErrorPath</key>
+  <string>/tmp/xpcminimalswift.err</string>
+</dict>
+</plist>
+

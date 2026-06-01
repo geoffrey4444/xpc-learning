@@ -1,4 +1,6 @@
 *.dSYM
 minimalmachxpc/client
 minimalmachxpc/server
+minimalmachxpc/swift-client
+minimalmachxpc/swift-server
 .DS_Store
